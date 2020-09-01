@@ -1,42 +1,31 @@
 <template>
-  <ul class="sidenav app-sidenav open">
+  <ul class="sidenav app-sidenav" :class="{open: isOpen}">
     <router-link
+      v-for="link in links"
+      :key="link.url"
       tag="li"
       active-class="active"
-      to="/"
-      exact
+      :to="link.url"
+      :exact="link.exact"
     >
-      <a href="#" class="waves-effect waves-orange pointer">Test</a>
+      <a href="#" class="waves-effect waves-orange pointer">{{link.title}}</a>
     </router-link>
-
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">Счет</a>
-    </li>
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">История</a>
-    </li>
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">Планирование</a>
-    </li>
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">Новая запись</a>
-    </li>
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">Категории</a>
-    </li>
   </ul>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    links: [
-      {title: 'Счет', url: '/'},
-      {title: 'История', url: '/history'},
-      {title: 'Планирование', url: '/planning'},
-      {title: 'Новая запись', url: '/record'},
-      {title: 'Категории', url: '/categories'}
-    ]
-  })
+  props: ['isOpen'],
+  data() {
+    return {
+      links: [
+        { title: "Счет", url: "/", exact: true },
+        { title: "История", url: "/history" },
+        { title: "Планирование", url: "/planning" },
+        { title: "Новая запись", url: "/record" },
+        { title: "Категории", url: "/categories" }
+      ]
+    };
+  }
 };
 </script>
