@@ -9,8 +9,10 @@ module.exports = {
   },
   "rules": {
     "no-unused-vars": "off",
-    "no-console": [
-      "warn",{ "allow":[ "clear", "info", "error", "dir", "trace", "log"]}
-    ],
+    "no-console": "off",
+    "quotes": ["warn", "single"],
+    "no-useless-catch": "off",
+    "no-case-declarations": 0,
+    "no-empty-pattern": "off"
   }
 };
