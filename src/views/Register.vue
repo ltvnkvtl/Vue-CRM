@@ -40,14 +40,22 @@
       <input
           id="name"
           type="text"
-          class="validate"
+          v-model.trim="name"
+          :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
       >
       <label for="name">Имя</label>
-      <small class="helper-text invalid">Name</small>
+      <small 
+          class="helper-text invalid"
+          v-if="$v.name.$dirty && !$v.name.required"
+        >Введите ваше имя</small>
+      <small 
+          class="helper-text invalid"
+          v-else-if="$v.name.$dirty && !$v.name.minLength"
+        >Имя должно быть не меньше {{$v.name.$params.minLength.min}} символов. Сейчас оно {{name.length}} символов</small>
     </div>
     <p>
       <label>
-        <input type="checkbox" />
+        <input type="checkbox" v-model="agree" />
         <span>С правилами согласен</span>
       </label>
     </p>
@@ -80,13 +88,15 @@ export default {
     return {
       email: '',
       password: '',
-      name: ''
+      name: '',
+      agree: false
     }
   },
   validations: {
     email: {required, email},
     password: {required, minLength: minLength(6)},
-    name: {required, minLength: minLength(2)}
+    name: {required, minLength: minLength(3)},
+    agree: {checked: v => v}
   },
   methods: {
     onSubmit() {
@@ -95,7 +105,14 @@ export default {
         return;
       }
 
-      this.$router.push('/login');
+      const formData = {
+        email: this.email,
+        password: this.password,
+        name: this.name
+      }
+
+      console.log(formData);
+      this.$router.push('/');
     }
   }
 }
