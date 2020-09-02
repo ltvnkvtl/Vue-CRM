@@ -14,5 +14,6 @@ module.exports = {
     "no-useless-catch": "off",
     "no-case-declarations": 0,
     "no-empty-pattern": "off"
+      
   }
 };

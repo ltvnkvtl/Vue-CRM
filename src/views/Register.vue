@@ -113,11 +113,10 @@ export default {
 
       try {
         await this.$store.dispatch('register', formData);
+        this.$router.push('/');
       } catch (e) {
         console.log(e);
       }
-      
-      this.$router.push('/');
     }
   }
 }
