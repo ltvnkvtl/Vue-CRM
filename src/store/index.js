@@ -22,8 +22,8 @@ export default new Vuex.Store({
 
       // https://fixer.io/quickstart - API for Currency
       const key = process.env.VUE_APP_FIXER;
-      const res = await fetch(`http://data.fixer.io/api/latest?access_key=${key}&symbols=USD,EUR,RUB`);
-      return await res.json();
+      // const res = await fetch(`http://data.fixer.io/api/latest?access_key=${key}&symbols=USD,EUR,RUB`);
+      // return await res.json();
     }
   },
   getters: {
