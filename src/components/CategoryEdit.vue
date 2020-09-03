@@ -7,8 +7,12 @@
 
       <form>
         <div class="input-field">
-          <select>
-            <option>Category</option>
+          <select ref="select">
+            <option 
+              v-for="categ of categories"
+              :key="categ.id"
+              :value="categ.id"
+            >{{categ.title}}</option>
           </select>
           <label>Выберите категорию</label>
         </div>
@@ -33,3 +37,28 @@
     </div>
   </div>
 </template>
+
+<script>
+import M from 'materialize-css';
+export default {
+  props: {
+    categories: {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      select: null
+    }
+  },
+  mounted() {
+    this.select = M.FormSelect.init(this.$refs.select);
+  },
+  destroyed() {
+    if (this.select && this.select.destroy) {
+      this.select.destroy();
+    }
+  }
+}
+</script>

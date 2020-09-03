@@ -55,7 +55,8 @@ export default {
   data() {
     return {
       title: "",
-      limit: 1
+      limit: 1,
+      updateField: null
     };
   },
   validations: {
@@ -63,7 +64,12 @@ export default {
     limit: { required, minValue: minValue(10) }
   },
   mounted() {
-    M.updateTextFields();
+    this.updateField = M.updateTextFields();
+  },
+  destroyed() {
+    if (this.updateField && this.updateField.destroy) {
+      this.updateField.destroy();
+    }
   },
   methods: {
     async onSubmit() {
