@@ -105,6 +105,7 @@ export default {
 
         await this.$store.dispatch('updateCategory', categoryData);
         this.$message('Категория успешно обновлена');
+        this.$emit('updated', categoryData);
       } catch (e) {
         console.log(e);
       }
