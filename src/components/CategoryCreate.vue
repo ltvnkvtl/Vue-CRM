@@ -77,7 +77,11 @@ export default {
         title: this.title,
         limit: this.limit
       });
-      console.log(category);
+        this.title = '';
+        this.limit = 1;
+        this.$v.$reset(); // reset state of the form
+        this.$message('Категория была создана');
+        this.$emit('created', category);
       } catch (e) {
         console.log(e);
       }
