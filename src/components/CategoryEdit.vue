@@ -7,7 +7,7 @@
 
       <form>
         <div class="input-field">
-          <select ref="select">
+          <select ref="select" v-model="current">
             <option 
               v-for="categ of categories"
               :key="categ.id"
@@ -18,15 +18,35 @@
         </div>
 
         <div class="input-field">
-          <input type="text" id="name" />
+          <input 
+            id="name" 
+            type="text" 
+            v-model="title"
+            :class="{invalid: $v.title.$dirty && !$v.title.required}"
+          />
           <label for="name">Название</label>
-          <span class="helper-text invalid">TITLE</span>
+          <span 
+            v-if="$v.title.$dirty && !$v.title.required"
+            class="helper-text invalid"
+          >Введите название категории</span>
         </div>
 
         <div class="input-field">
-          <input id="limit" type="number" />
+          <input 
+            id="limit" 
+            type="number" 
+            v-model.number="limit"
+            :class="{invalid: ($v.limit.$dirty && !$v.limit.required) || ($v.limit.$dirty && !$v.limit.minValue)}"
+          />
           <label for="limit">Лимит</label>
-          <span class="helper-text invalid">LIMIT</span>
+          <span 
+            v-if="$v.limit.$dirty && !$v.limit.required"
+            class="helper-text invalid"
+          >Введите лимит</span>
+          <span 
+            v-else-if="$v.limit.$dirty && !$v.limit.minValue"
+            class="helper-text invalid"
+          >Минимальная величина: {{$v.limit.$params.minValue.min}} у.е. Сейчас он {{limit}}</span>
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
@@ -39,7 +59,9 @@
 </template>
 
 <script>
+import { required, minValue } from "vuelidate/lib/validators";
 import M from 'materialize-css';
+
 export default {
   props: {
     categories: {
@@ -49,13 +71,36 @@ export default {
   },
   data() {
     return {
-      select: null
+      title: "",
+      limit: 1,
+      updateField: null,
+      select: null,
+      current: null
+    };
+  },
+  validations: {
+    title: { required },
+    limit: { required, minValue: minValue(10) }
+  },
+  watch: {
+    current(value) {
+      console.log(value);
     }
   },
+  created() {
+    const {id, title, limit} = this.categories[0];
+    this.current = id;
+    this.limit = limit;
+    this.title = title;
+  },
   mounted() {
+    this.updateField = M.updateTextFields();
     this.select = M.FormSelect.init(this.$refs.select);
   },
   destroyed() {
+    if (this.updateField && this.updateField.destroy) {
+      this.updateField.destroy();
+    }
     if (this.select && this.select.destroy) {
       this.select.destroy();
     }
