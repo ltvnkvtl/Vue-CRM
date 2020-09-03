@@ -24,7 +24,7 @@
           <input 
             id="limit" 
             type="number" 
-            v-model="limit"
+            v-model.number="limit"
             :class="{invalid: ($v.limit.$dirty && !$v.limit.required) || ($v.limit.$dirty && !$v.limit.minValue)}"
           />
           <label for="limit">Лимит</label>
@@ -35,7 +35,7 @@
           <span 
             v-else-if="$v.limit.$dirty && !$v.limit.minValue"
             class="helper-text invalid"
-          >Минимальная величина: {{$v.limit.$params.minLength.min}} у.е. Сейчас он {{password.length}}</span>
+          >Минимальная величина: {{$v.limit.$params.minValue.min}} у.е. Сейчас он {{limit}}</span>
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
@@ -49,6 +49,7 @@
 
 <script>
 import { required, minValue } from "vuelidate/lib/validators";
+import M from 'materialize-css';
 
 export default {
   data() {
@@ -59,13 +60,26 @@ export default {
   },
   validations: {
     title: { required },
-    limit: { required, minValue: minValue(1) }
+    limit: { required, minValue: minValue(10) }
+  },
+  mounted() {
+    M.updateTextFields();
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
+      }
+
+      try {
+        const category = await this.$store.dispatch('createCategory', {
+        title: this.title,
+        limit: this.limit
+      });
+      console.log(category);
+      } catch (e) {
+        console.log(e);
       }
     }
   }

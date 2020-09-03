@@ -23,10 +23,6 @@ export default {
       }
     }
   },
-  getUid() {
-    const user = firebase.auth().currentUser;
-    return user ? user.uid : null;
-  },
   getters: {
     info: s => s.info
   }
