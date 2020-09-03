@@ -5,7 +5,7 @@
         <h4>Редактировать</h4>
       </div>
 
-      <form>
+      <form @submit.prevent="onSubmit">
         <div class="input-field">
           <select ref="select" v-model="current">
             <option 
@@ -83,8 +83,31 @@ export default {
     limit: { required, minValue: minValue(10) }
   },
   watch: {
-    current(value) {
-      console.log(value);
+    current(categId) {
+      const {title, limit} = this.categories.find(c => c.id === categId);
+      this.limit = limit;
+      this.title = title;
+    }
+  },
+  methods: {
+    async onSubmit() {
+      if (this.$v.invalid) {
+        this.$v.$touch();
+        return;
+      }
+
+      try {
+        const categoryData = {
+          id: this.current,
+          title: this.title,
+          limit: this.limit
+        };
+
+        await this.$store.dispatch('updateCategory', categoryData);
+        this.$message('Категория успешно обновлена');
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   created() {
