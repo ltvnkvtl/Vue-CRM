@@ -18,7 +18,7 @@ export default {
         const uid = await dispatch('getUid');
         const updateData = { ...getters.info, ...toUpdate }
         await firebase.database().ref(`/users/${uid}/info`).update(updateData);
-        commit('SetInfo', updateData);
+        commit('setInfo', updateData);
       } catch (e) {
         commit('SetError', e);
         throw e;

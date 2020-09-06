@@ -152,10 +152,11 @@ export default {
     }
 
     // After loading ^, the <form></form> may not load, so there is no $refs.select
-    setTimeout(() => {
+    // The callback will be called after the DOM has been updated
+    this.$nextTick(() => {
       this.select = M.FormSelect.init(this.$refs.select);
       this.updateField = M.updateTextFields();
-    }, 0);
+    })
   },
   destroyed() {
     if (this.updateField && this.updateField.destroy) {

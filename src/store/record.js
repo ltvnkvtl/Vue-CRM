@@ -5,7 +5,7 @@ export default {
     async createRecord( {dispatch, commit}, record) {
       try {
         const uid = await dispatch('getUid');
-        return await firebase.database().ref(`/user/${uid}/records`).push(record);
+        return await firebase.database().ref(`/users/${uid}/records`).push(record);
       } catch (e) {
         commit('setError',e);
         throw e;
