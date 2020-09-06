@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      if (this.$v.invalid) {
+      if (this.$v.$invalid) {
         this.$v.$touch();
         return;
       }
@@ -118,8 +118,8 @@ export default {
     this.title = title;
   },
   mounted() {
-    this.updateField = M.updateTextFields();
     this.select = M.FormSelect.init(this.$refs.select);
+    this.updateField = M.updateTextFields();
   },
   destroyed() {
     if (this.updateField && this.updateField.destroy) {
