@@ -13,13 +13,17 @@
     </p>
 
     <section v-else>
-      <div>
+      <div v-for="cat of categories" :key="cat.id">
         <p>
-          <strong>Девушка:</strong>
-          12 122 из 14 0000
+          <strong>{{ cat.title }}</strong>
+          {{ cat.spend | currency }} из {{ cat.limit | currency }}
         </p>
         <div class="progress">
-          <div class="determinate green" style="width:40%"></div>
+          <div 
+            class="determinate"
+            :class="[cat.progressColor]"
+            :style="{width: cat.progressPercent + '%'}"
+          ></div>
         </div>
       </div>
     </section>
@@ -41,6 +45,28 @@ export default {
   async mounted() {
     const records = await this.$store.dispatch("fetchRecords");
     const categories = await this.$store.dispatch("fetchCategories");
+
+    this.categories = categories.map(categ => {
+      const spend = records
+        .filter(rec => rec.categoryId === categ.id)
+        .filter(r => r.type === 'outcome')
+        .reduce((acc, rec) => acc + +rec.amount, 0);
+
+      const percent = 100 * spend / categ.limit;
+      const progressPercent = percent > 100 ? 100 : percent;
+      const progressColor = percent < 60 
+      ? 'green' 
+      : percent < 100 
+      ? 'yellow' 
+      : 'red';
+
+      return {
+        ...categ,
+        progressPercent,
+        progressColor,
+        spend
+      }
+    });
 
     this.loading = false;
   }
