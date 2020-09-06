@@ -13,7 +13,8 @@ module.exports = {
     "quotes": ["warn", "single"],
     "no-useless-catch": "off",
     "no-case-declarations": 0,
-    "no-empty-pattern": "off"
+    "no-empty-pattern": "off",
+    "no-debugger": "off"
       
   }
 };
